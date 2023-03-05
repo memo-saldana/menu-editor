@@ -7,12 +7,17 @@ router.post('/', asyncHandler(SectionController.register()))
 
 router.get('/', asyncHandler(SectionController.getAll()))
 
+router.put('/:id', asyncHandler(SectionController.edit()))
+
+router.delete('/:id', asyncHandler(SectionController.delete()))
+
 router.get('/:id', asyncHandler(SectionController.getOne()))
 
 router.get('/:id/items', asyncHandler(SectionController.getItemsForSection()))
 
-router.put('/:id', asyncHandler(SectionController.edit()))
-
-router.delete('/:id', asyncHandler(SectionController.delete()))
+router.put(
+  '/:id/items/:itemId',
+  asyncHandler(SectionController.mapSectionToItem())
+)
 
 export default router

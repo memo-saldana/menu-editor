@@ -51,12 +51,21 @@ class SectionController {
   public getItemsForSection() {
     return async (req: Request<IdParam>, res: Response) => {
       const { id } = req.params
-      const items = await Item.findAll({
-        where: { sectionId: id },
-        attributes: ['id', 'name', 'description', 'price'],
-      })
+      console.log('ifs')
 
-      res.status(200).json({ items })
+      const section = await Section.findOne({
+        where: { id },
+        include: [
+          {
+            model: Item,
+            attributes: ['id', 'name', 'description', 'price'],
+          },
+        ],
+      })
+      if (!section) {
+        return Promise.reject(new ErrorWithStatus(404, 'Section not found'))
+      }
+      res.status(200).json({ items: section.items })
     }
   }
 
@@ -97,6 +106,32 @@ class SectionController {
         return Promise.reject(new ErrorWithStatus(404, 'Section not found'))
       }
       res.status(200).json({ message: 'Section deleted successfully' })
+    }
+  }
+
+  public mapSectionToItem() {
+    return async (
+      req: Request<IdParam & { itemId: number }>,
+      res: Response
+    ) => {
+      const { id, itemId } = req.params
+
+      const section = await Section.findOne({
+        attributes: ['id', 'name', 'description'],
+        where: { id },
+      })
+
+      if (!section) {
+        return Promise.reject(new ErrorWithStatus(404, 'Section not found'))
+      }
+
+      const item = await Item.findOne({ where: { id: itemId } })
+
+      if (!item) {
+        return Promise.reject(new ErrorWithStatus(404, 'Item not found'))
+      }
+      await item.$set('section', section)
+      res.status(200).json({ message: 'Item added to section successfully' })
     }
   }
 }
