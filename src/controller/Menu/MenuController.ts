@@ -7,7 +7,7 @@ import { Modifier } from '../../db/models/Modifier'
 class MenuController {
   public getMenu() {
     return async (req: Request, res: Response) => {
-      const sections = await Section.findOne({
+      const sections = await Section.findAll({
         attributes: ['id', 'name', 'description'],
         include: [
           {
