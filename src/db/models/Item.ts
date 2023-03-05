@@ -1,8 +1,10 @@
 import {
+  AllowNull,
   BelongsTo,
   BelongsToMany,
   Column,
   DataType,
+  ForeignKey,
   Min,
   Model,
   Table,
@@ -20,13 +22,17 @@ export class Item extends Model {
   description!: string
 
   @Min(0)
+  @AllowNull(false)
   @Column({
     type: DataType.DECIMAL,
     get(this: Item): number {
-      return parseFloat(this.getDataValue('amount'))
+      return parseFloat(this.getDataValue('price'))
     },
   })
   price!: number
+
+  @ForeignKey(() => Section)
+  sectionId!: number
 
   @BelongsTo(() => Section, 'sectionId')
   section!: Section
