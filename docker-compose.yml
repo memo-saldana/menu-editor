@@ -1,0 +1,39 @@
+version: '3.4'
+
+services:
+  api-nodemon:
+    container_name: menu-ts-nodemon
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: base
+    ports:
+      - ${PORT}:${PORT}
+    env_file:
+      - .env
+    volumes:
+      - ./src:/app/src
+      - ./nodemon.json:/app/nodemon.json
+    command: yarn watch
+    depends_on:
+      - db
+  db:
+    container_name: menu-db
+    image: postgres
+    volumes:
+      - data:/data/db
+    environment:
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_DB=${DB_NAME}
+    ports:
+      - 5432:5432
+  db-test:
+    container_name: menu-db-test
+    image: postgres
+    environment:
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_DB=${DB_NAME}
+    ports:
+      - 5431:5432
+volumes:
+  data: {}

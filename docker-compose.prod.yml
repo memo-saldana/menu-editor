@@ -1,0 +1,14 @@
+version: '3.4'
+
+services:
+  api:
+    container_name: api
+    build:
+      target: production
+    ports:
+      - 8080:${PORT}
+    env_file:
+      - .env
+    depends_on:
+      - db
+    command: yarn start
