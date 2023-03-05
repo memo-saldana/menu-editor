@@ -9,10 +9,15 @@ router.get('/', asyncHandler(ModifierController.getAll()))
 
 router.get('/:id', asyncHandler(ModifierController.getOne()))
 
-router.get('/:id/items', asyncHandler(ModifierController.getItemsForModifier()))
-
 router.put('/:id', asyncHandler(ModifierController.edit()))
 
 router.delete('/:id', asyncHandler(ModifierController.delete()))
+
+router.get('/:id/items', asyncHandler(ModifierController.getItemsForModifier()))
+
+router.put(
+  '/:id/items/:itemId',
+  asyncHandler(ModifierController.mapModifierToItem())
+)
 
 export default router

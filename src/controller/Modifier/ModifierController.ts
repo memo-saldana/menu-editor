@@ -3,6 +3,7 @@ import { Request, Response } from 'express'
 import ErrorWithStatus from '../../utils/ErrorWithStatus'
 import { Item } from '../../db/models/Item'
 import { IdParam } from '../../types/common'
+import { addModifierToItem } from '../../db/mappers'
 
 type ModifierData = { description: string }
 
@@ -93,6 +94,7 @@ class ModifierController {
       res.status(200).json({ message: 'Modifier updated successfully' })
     }
   }
+
   public delete() {
     return async (req: Request<IdParam>, res: Response) => {
       const { id } = req.params
@@ -103,6 +105,19 @@ class ModifierController {
         return Promise.reject(new ErrorWithStatus(404, 'Modifier not found'))
       }
       res.status(200).json({ message: 'Modifier deleted successfully' })
+    }
+  }
+
+  public mapModifierToItem() {
+    return async (
+      req: Request<IdParam & { itemId: number }>,
+      res: Response
+    ) => {
+      const { id, itemId } = req.params
+
+      await addModifierToItem(id, itemId)
+
+      res.status(200).json({ message: 'Modifier added to item successfully' })
     }
   }
 }
