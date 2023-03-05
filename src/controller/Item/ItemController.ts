@@ -10,8 +10,6 @@ class ItemController {
   public register() {
     return async (req: Request, res: Response) => {
       const { name, description, price }: ItemData = req.body
-      console.log('price :>> ', price)
-      console.log('typeof price :>> ', typeof price)
       if (!name) {
         return Promise.reject(
           new ErrorWithStatus(400, 'Item name not provided')
@@ -58,12 +56,21 @@ class ItemController {
   public getModifiersForItem() {
     return async (req: Request<IdParam>, res: Response) => {
       const { id } = req.params
-      const modifiers = await Modifier.findAll({
-        where: { itemId: id },
-        attributes: ['id', 'description'],
-      })
 
-      res.status(200).json({ modifiers })
+      const item = await Item.findOne({
+        where: { id },
+        include: {
+          model: Modifier,
+          through: {
+            attributes: [],
+          },
+        },
+      })
+      if (!item) {
+        return Promise.reject(new ErrorWithStatus(404, 'Item not found'))
+      }
+
+      res.status(200).json({ modifiers: item?.modifiers })
     }
   }
 
@@ -74,6 +81,10 @@ class ItemController {
         attributes: ['id', 'name', 'description', 'price'],
         where: { id },
       })
+
+      if (!item) {
+        return Promise.reject(new ErrorWithStatus(404, 'Item not found'))
+      }
 
       res.status(200).json({ item })
     }
