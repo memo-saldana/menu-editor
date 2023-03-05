@@ -1,10 +1,12 @@
 class ErrorWithStatus extends Error {
   public statusCode: number
-  constructor(statusCode: number, message: string) {
+  public original?: Error
+  constructor(statusCode: number, message: string, error?: Error) {
     super(message)
     Object.setPrototypeOf(this, new.target.prototype)
     this.name = Error.name
     this.statusCode = statusCode
+    if (error) this.original = error
     Error.captureStackTrace(this)
   }
 }
