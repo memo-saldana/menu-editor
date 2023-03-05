@@ -47,12 +47,15 @@ class ModifierController {
       const { id } = req.params
       const modifier = await Modifier.findOne({
         where: { id },
-        include: {
-          model: Item,
-          through: {
-            attributes: [],
+        include: [
+          {
+            model: Item,
+            attributes: ['id', 'name', 'description', 'price'],
+            through: {
+              attributes: [],
+            },
           },
-        },
+        ],
       })
       if (!modifier) {
         return Promise.reject(new ErrorWithStatus(404, 'Modifier not found'))

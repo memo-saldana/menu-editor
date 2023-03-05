@@ -59,12 +59,15 @@ class ItemController {
 
       const item = await Item.findOne({
         where: { id },
-        include: {
-          model: Modifier,
-          through: {
-            attributes: [],
+        include: [
+          {
+            model: Modifier,
+            attributes: ['id', 'description'],
+            through: {
+              attributes: [],
+            },
           },
-        },
+        ],
       })
       if (!item) {
         return Promise.reject(new ErrorWithStatus(404, 'Item not found'))
