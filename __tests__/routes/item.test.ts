@@ -1,3 +1,4 @@
+import { Modifier } from '../../src/db/models/Modifier'
 import request from 'supertest'
 import app from '../../src/app'
 import { sequelizeConnection } from '../../src/db/config'
@@ -44,6 +45,23 @@ describe('Item endpoints', () => {
       const description = 'Edited'
       const res = await request(app).put('/items/1').send({ description })
       expect(res.status).toEqual(200)
+    })
+  })
+  describe('PUT /items/:id/modifiers/:modifierId', () => {
+    test('Maps modifier to item', async () => {
+      const modifier = await Modifier.create({
+        description: 'Some modification',
+      })
+
+      const res = await request(app).put(`/items/1/modifiers/${modifier.id}`)
+      expect(res.status).toEqual(200)
+    })
+  })
+  describe('Get /items/:id/modifiers', () => {
+    test('Gets all items that have', async () => {
+      const res = await request(app).get('/items/1/modifiers')
+      expect(res.status).toEqual(200)
+      expect(res.body.modifiers.length).toEqual(1)
     })
   })
   describe('DELETE /items/:id', () => {

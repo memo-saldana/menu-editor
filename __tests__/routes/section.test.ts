@@ -1,3 +1,4 @@
+import { Item } from '../../src/db/models/Item'
 import request from 'supertest'
 import app from '../../src/app'
 import { sequelizeConnection } from '../../src/db/config'
@@ -43,6 +44,25 @@ describe('Section endpoints', () => {
       const description = 'Edited'
       const res = await request(app).put('/sections/1').send({ description })
       expect(res.status).toEqual(200)
+    })
+  })
+  describe('PUT /sections/:id/items/:itemId', () => {
+    test('Maps item to section', async () => {
+      const item = await Item.create({
+        name: 'Item',
+        description: 'Interesting food',
+        price: 10,
+      })
+
+      const res = await request(app).put(`/sections/1/items/${item.id}`)
+      expect(res.status).toEqual(200)
+    })
+  })
+  describe('Get /sections/:id/items', () => {
+    test('Gets all items of section', async () => {
+      const res = await request(app).get('/sections/1/items')
+      expect(res.status).toEqual(200)
+      expect(res.body.items.length).toEqual(1)
     })
   })
   describe('DELETE /sections/:id', () => {
