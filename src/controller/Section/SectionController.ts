@@ -51,7 +51,6 @@ class SectionController {
   public getItemsForSection() {
     return async (req: Request<IdParam>, res: Response) => {
       const { id } = req.params
-      console.log('ifs')
 
       const section = await Section.findOne({
         where: { id },
