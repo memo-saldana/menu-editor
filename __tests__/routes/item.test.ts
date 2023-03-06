@@ -44,6 +44,15 @@ describe('Item endpoints', () => {
       expect(res.statusCode).toEqual(400)
       expect(res.body.message).toEqual('Item price not provided')
     })
+    test('Validates that price is positive', async () => {
+      const res = await request(app)
+        .post('/items')
+        .send({ name: 'Name', description: 'Description', price: -1 })
+      expect(res.statusCode).toEqual(400)
+      expect(res.body.message).toEqual(
+        'Validation error ocurred, check the given input'
+      )
+    })
     test('Validates that items with unique names are provided', async () => {
       const res = await request(app).post('/items').send(itemData)
       expect(res.statusCode).toEqual(400)
