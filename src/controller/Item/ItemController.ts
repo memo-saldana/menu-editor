@@ -74,7 +74,7 @@ class ItemController {
         return Promise.reject(new ErrorWithStatus(404, 'Item not found'))
       }
 
-      res.status(200).json({ modifiers: item?.modifiers })
+      res.status(200).json({ modifiers: item.modifiers })
     }
   }
 
