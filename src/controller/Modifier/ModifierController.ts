@@ -22,7 +22,10 @@ class ModifierController {
 
       if (!created) {
         return Promise.reject(
-          new ErrorWithStatus(400, 'Modifier with that name already exists')
+          new ErrorWithStatus(
+            400,
+            'Modifier with that description already exists'
+          )
         )
       }
 
