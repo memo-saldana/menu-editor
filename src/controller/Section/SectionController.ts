@@ -76,6 +76,10 @@ class SectionController {
         where: { id },
       })
 
+      if (!section) {
+        return Promise.reject(new ErrorWithStatus(404, 'Section not found'))
+      }
+
       res.status(200).json({ section })
     }
   }
