@@ -16,7 +16,7 @@ This API uses the following technologies, make sure you have these installed.
 
 **Recommended** (these dependencies are great for development, code clarity, and formatting, but are not necessary to run the project):
 
-- ([NVM](https://github.com/nvm-sh/nvm) is recommended)
+- [NVM](https://github.com/nvm-sh/nvm)
 - [ESLint](https://eslint.org/)
 - [Prettier](https://prettier.io/docs/en/install.html)
 - [Postman](https://www.postman.com/downloads/)
@@ -55,7 +55,7 @@ yarn install
 Testing can be done in container. To run them in the container, just run:
 
 ```
-docker exec ts-nodemon yarn test
+docker exec menu-ts-nodemon yarn test
 ```
 
 Make sure the container is setup before running it.
