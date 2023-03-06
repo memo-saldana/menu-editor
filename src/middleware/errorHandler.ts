@@ -11,7 +11,6 @@ const errorHandler =
     next: NextFunction
   ) => {
     if (err instanceof ValidationError) {
-      console.log('errors \n', err.errors)
       next(
         new ErrorWithStatus(
           400,
